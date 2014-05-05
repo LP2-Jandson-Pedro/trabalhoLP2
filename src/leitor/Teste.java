@@ -21,7 +21,7 @@ public class Teste {
 	public static void main(String [] args)
 	{
 		try {
-			lerArquivo(new FileInputStream("/home/jandson/Documents/arquivo3.txt"));
+			lerArquivo(new FileInputStream("/home/jandson/Documents/arquivo1.txt"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

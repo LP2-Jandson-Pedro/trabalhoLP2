@@ -37,7 +37,7 @@ public class Arvore
 		{
 			System.out.print("\n");
 			for (int counter = 0; counter < Espacos; counter++) {System.out.print(" ");}
-			irmao_dir.ler(chave.length() + 2 + Espacos);
+			irmao_dir.ler(Espacos);
 		}
 	}
 	
@@ -61,6 +61,8 @@ public class Arvore
 			
 			switch((char)caracter)
 			{
+				case '\n':
+					break;
 				case ')':
 					ultimo = (char)caracter;
 					return;
@@ -73,7 +75,7 @@ public class Arvore
 					ultimo = (char)caracter;
 					break;
 				case ' ':
-					if (this.filho == null)
+					if (this.filho == null && ultimo != ' ')
 					{
 						this.filho = new Arvore();
 						this.filho.lerArquivo(is);
@@ -94,7 +96,7 @@ public class Arvore
 		BufferedReader bf;
 		Arvore oi = new Arvore();
 		try {
-			bf = new BufferedReader(new InputStreamReader(new FileInputStream("/home/jandson/Documents/arquivo3.txt")));
+			bf = new BufferedReader(new InputStreamReader(new FileInputStream("/home/jandson/Documents/arquivo2.txt")));
 			oi.lerArquivo(bf);
 		} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
