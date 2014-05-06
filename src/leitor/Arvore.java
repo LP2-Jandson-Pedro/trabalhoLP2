@@ -61,13 +61,11 @@ public class Arvore
 			
 			switch((char)caracter)
 			{
-				case '\n':
-					break;
 				case ')':
 					ultimo = (char)caracter;
 					return;
 				case '(':
-					if (ultimo == ' ')
+					if (this.filho != null)
 					{		
 						this.irmao_dir = new Arvore();
 						this.irmao_dir.lerArquivo(is);

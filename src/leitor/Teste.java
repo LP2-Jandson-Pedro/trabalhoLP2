@@ -1,27 +1,22 @@
 package leitor;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;  
+import java.util.StringTokenizer;
 
 public class Teste {
 	
-	public static void lerArquivo(InputStream is) throws IOException
-	{		
-		int caracter;
-		BufferedReader bf = new BufferedReader(new InputStreamReader(is));
-		caracter = bf.read();
-	
-		while ( (caracter = bf.read()) != -1){System.out.print((char)caracter);}
-	}
-	
-	public static void main(String [] args)
+	public static void LePalavras()
 	{
+		BufferedReader leitor;
 		try {
-			lerArquivo(new FileInputStream("/home/jandson/Documents/arquivo1.txt"));
+			leitor = new BufferedReader(new FileReader("/home/jandson/Documents/arquivo3.txt") );
+			String linha = leitor.readLine();
+			StringTokenizer st = new StringTokenizer(linha, " "); //passa o arq e o token
+			
+			while (st.hasMoreTokens()) // enquanto existir algo para ler  
+		    {  
+				System.out.println("palavra1:"+ st.nextToken());// faz qualquer coisa  
+			}  
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -29,5 +24,12 @@ public class Teste {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	    
+	}    
+	
+	public static void main(String [] args)
+	{
+			LePalavras();
 	}
 }
