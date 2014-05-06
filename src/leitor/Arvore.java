@@ -96,7 +96,7 @@ public class Arvore
 		BufferedReader bf;
 		Arvore oi = new Arvore();
 		try {
-			bf = new BufferedReader(new InputStreamReader(new FileInputStream("/home/jandson/Documents/arquivo2.txt")));
+			bf = new BufferedReader(new InputStreamReader(new FileInputStream("/home/jandson/Documents/arquivo3.txt")));
 			oi.lerArquivo(bf);
 		} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
