@@ -53,40 +53,39 @@ public class Arvore
 	
 	public void lerArquivo(BufferedReader is) throws IOException
 	{		
-		int caracter;
-		char ultimo = '.';
+		int caracter = 0;
 		
-		while ((caracter = is.read()) != -1)
+		while (caracter != -1)
 		{
-			
-			switch((char)caracter)
+			caracter = is.read();
+			if (caracter != -1)
 			{
-				case '\n':
-					break;
-				case ')':
-					ultimo = (char)caracter;
-					return;
-				case '(':
-					if (ultimo == ' ')
-					{		
-						this.irmao_dir = new Arvore();
-						this.irmao_dir.lerArquivo(is);
-					}
-					ultimo = (char)caracter;
-					break;
-				case ' ':
-					if (this.filho == null && ultimo != ' ')
-					{
-						this.filho = new Arvore();
-						this.filho.lerArquivo(is);
-						ultimo = (char)caracter;
-					}
-					break;
-				default:
-					this.chave = this.chave+(char)caracter;
-					ultimo = (char)caracter;
-					break;
+				switch((char)caracter)
+				{
+					case '\n':
+					case '\r':
+						break;
+					case ')':
+						return;
+					case '(':
+						if (this.filho == null) {this.filho = new Arvore();}
+						else
+						{
+							this.irmao_dir = new Arvore();
+							this.irmao_dir.filho = new Arvore();
+							this.irmao_dir.lerArquivo(is);
+						}
+						break;
+					case ' ':
+						if (this.filho.chave == "") {this.filho.lerArquivo(is);}
+						break;
+					default:
+						this.chave = this.chave+(char)caracter;
+						break;
+				}
+				if (this.irmao_dir != null){return;}
 			}
+			
 		}
 	}
 	
@@ -96,7 +95,7 @@ public class Arvore
 		BufferedReader bf;
 		Arvore oi = new Arvore();
 		try {
-			bf = new BufferedReader(new InputStreamReader(new FileInputStream("/home/jandson/Documents/arquivo3.txt")));
+			bf = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\labisic\\Downloads\\arquivo3.txt")));
 			oi.lerArquivo(bf);
 		} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
