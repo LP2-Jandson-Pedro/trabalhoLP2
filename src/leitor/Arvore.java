@@ -58,31 +58,6 @@ public class Arvore
 			caracter = is.read();
 			if (caracter != -1)
 			{
-<<<<<<< HEAD
-				case ')':
-					ultimo = (char)caracter;
-					return;
-				case '(':
-					if (this.filho != null)
-					{		
-						this.irmao_dir = new Arvore();
-						this.irmao_dir.lerArquivo(is);
-					}
-					ultimo = (char)caracter;
-					break;
-				case ' ':
-					if (this.filho == null && ultimo != ' ')
-					{
-						this.filho = new Arvore();
-						this.filho.lerArquivo(is);
-						ultimo = (char)caracter;
-					}
-					break;
-				default:
-					this.chave = this.chave+(char)caracter;
-					ultimo = (char)caracter;
-					break;
-=======
 				switch((char)caracter)
 				{
 					case '\n':
@@ -107,7 +82,6 @@ public class Arvore
 						break;
 				}
 				if (this.irmao_dir != null){return;}
->>>>>>> 731606462d66ac83d1227a9c13a005fbbfd4b08e
 			}
 			
 		}
