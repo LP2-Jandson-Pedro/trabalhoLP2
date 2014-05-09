@@ -10,7 +10,7 @@ public class Main {
 
 	public static void main(String[] args) {
 	
-		Arvore arvoreInterna = new Arvore();
+		Arvore2 arvoreInterna = new Arvore2();
 		try
 		{
 			BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(args[1])));

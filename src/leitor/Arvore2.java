@@ -5,19 +5,19 @@ import java.io.IOException;
 
 
 
-public class Arvore
+public class Arvore2
 {
 	private String chave;
-	private Arvore filho;
-	private Arvore irmao_dir;
+	private Arvore2 filho;
+	private Arvore2 irmao_dir;
 	
-	public Arvore()
+	public Arvore2()
 	{
 		chave = "";
 		filho = null;
 		irmao_dir = null;
 	}
-
+	
 	public void lerArvore() {ler(0);}
 
 	public void ler(int Espacos)
@@ -37,6 +37,14 @@ public class Arvore
 		}
 	}
 	
+	public void deleta()
+	{
+		if (this.irmao_dir != null) {this.irmao_dir.deleta();}
+		if (this.filho != null) {this.filho.deleta();}
+		this.irmao_dir = null;
+		this.filho = null;
+	}
+	
 	public void lerArquivo(BufferedReader is) throws IOException
 	{		
 		int caracter = 0;
@@ -49,14 +57,23 @@ public class Arvore
 					case '\r':
 						break;
 					case ')':
+						//System.out.println(this.chave);
 						return;
 					case '(':
-						if (this.filho == null) {this.filho = new Arvore();}
+						if (this.chave == "TOP" && this.filho.chave != null)
+						{
+							this.deleta();
+							this.filho = new Arvore2();
+						}
 						else
 						{
-							this.irmao_dir = new Arvore();
-							this.irmao_dir.filho = new Arvore();
-							this.irmao_dir.lerArquivo(is);
+							if (this.filho == null) {this.filho = new Arvore2();}
+							else
+							{
+								this.irmao_dir = new Arvore2();
+								this.irmao_dir.filho = new Arvore2();
+								this.irmao_dir.lerArquivo(is);
+							}
 						}
 						break;
 					case ' ':
