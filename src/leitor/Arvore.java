@@ -1,13 +1,9 @@
 package leitor;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+
 
 
 
@@ -56,7 +52,6 @@ public class Arvore
 			}
 	}
 	
-<<<<<<< HEAD
 	private void limpaArvore()
 	{
 		if (this.irmao_dir != null){irmao_dir.limpaArvore();}
@@ -67,15 +62,11 @@ public class Arvore
 	}
 	
 	public void lerArquivo(BufferedReader is,FileWriter escrita) throws IOException
-=======
-	public void lerArquivo(BufferedReader is) throws IOException
->>>>>>> dd52c14f0264456a94b6ee37ca7932623288466c
 	{		
 		int caracter = 0;
 		
 		while ((caracter = is.read()) != -1)
 		{
-<<<<<<< HEAD
 			switch((char)caracter)
 			{
 				case '\n':
@@ -106,32 +97,6 @@ public class Arvore
 					break;
 			}
 			if (this.irmao_dir != null){return;}		
-=======
-				switch((char)caracter)
-				{
-					case '\n':
-					case '\r':
-						break;
-					case ')':
-						return;
-					case '(':
-						if (this.filho == null) {this.filho = new Arvore();}
-						else
-						{
-							this.irmao_dir = new Arvore();
-							this.irmao_dir.filho = new Arvore();
-							this.irmao_dir.lerArquivo(is);
-						}
-						break;
-					case ' ':
-						if (this.filho.chave == "") {this.filho.lerArquivo(is);}
-						break;
-					default:
-						this.chave = this.chave+(char)caracter;
-						break;
-				}
-				if (this.irmao_dir != null){return;}
->>>>>>> dd52c14f0264456a94b6ee37ca7932623288466c
 		}
 	}
 }

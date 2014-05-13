@@ -12,13 +12,9 @@ public class Main {
 
 	public static void main(String[] args) {
 	
-<<<<<<< HEAD
 		Arvore arvoreInterna = new Arvore();
 		File saida = null;
 		FileWriter escrita = null;
-=======
-		Arvore2 arvoreInterna = new Arvore2();
->>>>>>> dd52c14f0264456a94b6ee37ca7932623288466c
 		try
 		{
 			saida = new File("saida.txt");
