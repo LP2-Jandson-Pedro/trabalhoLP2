@@ -1,8 +1,10 @@
 package leitor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -11,18 +13,20 @@ public class Main {
 	public static void main(String[] args) {
 	
 		Arvore arvoreInterna = new Arvore();
+		File saida = null;
+		FileWriter escrita = null;
 		try
 		{
+			saida = new File("saida.txt");
+
+			escrita = new FileWriter(saida);
+				//writerBuffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saida)));
 			BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(args[1])));
-			switch(args[0])
-			{
-				case "-p":
-					arvoreInterna.lerArquivo(bf);
-					arvoreInterna.lerArvore();
-					break;
-				case "-s":
-					break;
-			}
+
+			if (args[0].compareTo("-p")== 0){arvoreInterna.lerArquivo(bf, escrita);}
+
+			escrita.flush();
+			escrita.close();
 		} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
