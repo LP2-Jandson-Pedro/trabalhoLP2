@@ -17,8 +17,6 @@ public class Arvore
 		filho = null;
 		irmao_dir = null;
 	}
-	
-	public void insereChave(char novaChave) {chave = chave + novaChave;}
 
 	public void lerArvore() {ler(0);}
 
@@ -38,15 +36,30 @@ public class Arvore
 			irmao_dir.ler(Espacos);
 		}
 	}
-	
-	public void novoIrmaodir()
+	/*
+	public void lerArquivo(BufferedReader is) throws IOException
 	{
-		this.irmao_dir = new Arvore();
+		int caracter = 0;
+		while (caracter != -1)
+		{
+			switch((char)caracter)
+			{
+			case '\n':
+			case '\r':
+				break;
+			case '(':
+				
+			}
+		}
 	}
+	*/
 	
-	public void novoFilho()
+	private void limpaArvore()
 	{
-		this.filho = new Arvore();
+		if (this.irmao_dir != null){irmao_dir.limpaArvore();}
+		if (this.filho != null){filho.limpaArvore();}
+		irmao_dir = null;
+		filho = null;
 	}
 	
 	public void lerArquivo(BufferedReader is) throws IOException
@@ -58,7 +71,8 @@ public class Arvore
 			caracter = is.read();
 			if (caracter != -1)
 			{
-				switch((char)caracter)
+				char atual = (char)caracter;
+				switch(atual)
 				{
 					case '\n':
 					case '\r':
@@ -66,6 +80,14 @@ public class Arvore
 					case ')':
 						return;
 					case '(':
+						if (this.chave.contains("T") &&this.chave.contains("O")&&this.chave.contains("P"))
+						{
+							//lerArvore();
+							System.out.println("aqui");
+							this.limpaArvore();
+							this.filho = new Arvore();
+							this.chave = "";
+						}
 						if (this.filho == null) {this.filho = new Arvore();}
 						else
 						{
@@ -75,15 +97,18 @@ public class Arvore
 						}
 						break;
 					case ' ':
-						if (this.filho.chave == "") {this.filho.lerArquivo(is);}
+						if (this.filho != null)
+						{
+							if (this.filho.chave == "") {this.filho.lerArquivo(is);}
+						}
 						break;
 					default:
 						this.chave = this.chave+(char)caracter;
 						break;
 				}
 				if (this.irmao_dir != null){return;}
+				
 			}
-			
 		}
 	}
 }
