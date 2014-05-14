@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
-
-
 public class Arvore
 {
 	private String chave;
@@ -20,22 +17,21 @@ public class Arvore
 		irmao_dir = null;
 	}
 
-	public void lerArvore(FileWriter escrita)
-	{ler(0,escrita);}
+	private void lerArvore(FileWriter escrita) {ler(0,escrita);}
 
-	public void ler(int Espacos,FileWriter escrita)
+	private void ler(int Espacos,FileWriter escrita)
 	{
 
 		try
 		{
-			if (filho != null) {escrita.write("(");}
+			if (this.filho != null) {escrita.write("(");}
 			
-			escrita.write(chave);
+			escrita.write(this.chave);
 			
-			if (filho != null)
+			if (this.filho != null)
 			{
 				escrita.write(" ");
-				filho.ler(chave.length() + 2 + Espacos,escrita);
+				this.filho.ler(this.chave.length() + 2 + Espacos,escrita);
 				escrita.write(")");
 			}
 		
@@ -43,13 +39,33 @@ public class Arvore
 			{
 				escrita.write("\n");
 				for (int counter = 0; counter < Espacos; counter++) {escrita.write(" ");}
-				irmao_dir.ler(Espacos,escrita);
+				this.irmao_dir.ler(Espacos,escrita);
 			}
 		}
 			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+	}
+	
+	private void ler2(int Espacos,FileWriter escrita)
+	{
+		if (this.filho != null) {System.out.print("(");}
+		
+		System.out.print(this.chave);
+		
+		if (this.filho != null)
+		{
+			System.out.print(" ");
+			this.filho.ler2(this.chave.length() + 2 + Espacos,escrita);
+			System.out.print(")");
+		}
+		
+		if (irmao_dir != null)
+		{
+			for (int counter = 0; counter < Espacos; counter++) {System.out.print(" ");}
+			this.irmao_dir.ler2(Espacos,escrita);
+		}
 	}
 	
 	private void limpaArvore()
@@ -60,8 +76,49 @@ public class Arvore
 		filho = null;
 		System.gc();
 	}
+	private boolean checkSons(String padrao)
+	{
+		if(padrao.compareTo("-") == 0) {return true;}
+		if (this.chave.compareTo(padrao) == 0){return true;}
+		if(this.irmao_dir != null){return irmao_dir.checkSons(padrao);}
+		return false;
+	}
 	
-	public void lerArquivo(BufferedReader is,FileWriter escrita) throws IOException
+	private void search2(String padrao2,int espaco, FileWriter escrita)
+	{
+		if (this.chave.compareTo(padrao2) == 0)
+		{
+			System.out.print("(" + this.chave + " ");
+			this.filho.ler2(this.chave.length() + 2 + espaco, escrita);
+			System.out.print(")");
+		}
+		if (irmao_dir != null)
+		{
+			if (irmao_dir.chave.compareTo(padrao2) == 0)
+			{
+				System.out.print("\n");
+				for (int i = 0; i < espaco; i++){System.out.print(" ");}
+			}
+			irmao_dir.search2(padrao2,espaco, escrita);
+		}
+	}
+	
+	private void searchMain(String padrao1, String padrao2,FileWriter escrita)
+	{
+		if (this.filho != null)
+		{
+			if (this.chave.compareTo(padrao1) == 0 && this.filho.checkSons(padrao2))
+			{
+				System.out.print("("+this.chave+" ");
+				this.filho.search2(padrao2, this.chave.length() + 2, escrita);
+				System.out.println(")");
+			}
+			this.filho.searchMain(padrao1, padrao2, escrita);
+		}
+		if (this.irmao_dir != null) {this.irmao_dir.searchMain(padrao1, padrao2, escrita);}
+	}
+	
+	public void lerArquivo(BufferedReader is,FileWriter escrita, String opt, String padrao1, String padrao2) throws IOException
 	{		
 		int caracter = 0;
 		
@@ -77,7 +134,8 @@ public class Arvore
 				case '(':
 					if (this.chave.compareTo("TOP") == 0)
 					{
-						lerArvore(escrita);
+						if (opt.compareTo("-p") == 0) {this.lerArvore(escrita);}
+						if (opt.compareTo("-s") == 0) {this.searchMain(padrao1, padrao2, escrita);}
 						this.limpaArvore();
 						this.chave = "";
 					}
@@ -86,11 +144,11 @@ public class Arvore
 					{
 						this.irmao_dir = new Arvore();
 						this.irmao_dir.filho = new Arvore();
-						this.irmao_dir.lerArquivo(is,escrita);
+						this.irmao_dir.lerArquivo(is, escrita, opt, padrao1, padrao2);
 					}
 					break;
 				case ' ':
-					if (this.filho.chave == "") {this.filho.lerArquivo(is,escrita);}
+					if (this.filho.chave == "") {this.filho.lerArquivo(is, escrita, opt, padrao1, padrao2);}
 					break;
 				default:
 					this.chave = this.chave+(char)caracter;

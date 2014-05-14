@@ -19,14 +19,15 @@ public class Main {
 		{
 			saida = new File("saida.txt");
 
-			escrita = new FileWriter(saida);
-				//writerBuffer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saida)));
+			//escrita = new FileWriter(saida);
+			
 			BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(args[1])));
 
-			if (args[0].compareTo("-p")== 0){arvoreInterna.lerArquivo(bf, escrita);}
+			if (args.length > 2) {arvoreInterna.lerArquivo(bf, new FileWriter(saida), args[0], args[2], args[3]);}
+			else {arvoreInterna.lerArquivo(bf, new FileWriter(saida), args[0], "-", "-");}
 
-			escrita.flush();
-			escrita.close();
+			//escrita.flush();
+			//escrita.close();
 		} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -36,4 +37,3 @@ public class Main {
 		}
 	}
 }
-//C:\\Users\\labisic\\Downloads\\arquivo3.txt
