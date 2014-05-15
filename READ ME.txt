@@ -1,0 +1,88 @@
+							 UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE - UFRN
+
+
+
+
+													INSTITUTO METRÓPOLE DIGITAL
+
+
+
+
+
+							TRABALHO DE ESTRUTURAS DE DADOS BÁSICAS 2 - IMD0032
+
+
+																	 UNIDADE II
+
+
+										 PATTERN MATCHING EM ÁRVORES SINTÁTICAS
+
+
+
+
+
+
+
+
+
+													 PROFESSOR: Carlos A. Prolo
+
+								 ALUNO: Jandson de Oliveira Cavalcanti Ribeiro
+																															 NATAL, 15/05/2014
+
+
+
+
+	INSTRUÇÃO PARA COMPILAR E RODAR:
+
+		Esse trabalho foi desenvolvido no eclipse em java versão 1.6, que é a presente nas máquinas do laboratório.
+	Para complicar e rodar é simples:
+
+			1 - Importe para o eclipse(por ele estar configurado com a versão usada no laboratório e não conter nenhuma biblioteca que precise
+					ser configurada na build path, ele não deverá apresentar problemas).
+
+			2 - No eclipse, Vá em projetoEDB2/src/ e clique com o botão direito em Main.java e selecione "run as" -> "run configurations".
+
+			3 - Assegure-se que na aba "Main" em Project está selecionado: "ProjetoEDB2", e em Main class: "leitor.Main".
+   		Selecione a aba "Arguments" e em "Program arguments" digite os argumentos a serem passados para o programa.
+   		Exemplo: "-p /caminho/da/entrada.txt VP NNP"
+
+	SAIDA:
+
+		Todas as opcões desse trabalho geram um arquivo .txt na pasta default do projeto, ou seja, junto com as pastas "bin", "src" e este
+		arquivo.
+
+	OSERVAÇÕES:
+
+		1 - Este trabalho foi desenvolvido para ler entradas tanto em formato "pretty-print" quanto "flat" e a saída é gerada sempre em formato
+				pretty-print.
+
+		2 - Não foi implementada a opção translate.
+
+		3 - A opção search mostra todas as subárvores que satisfazem o padrão como especificado no arquivo "trab2-IMD0032.pdf", caso haja por
+				exemplo: uma subárvore que deva ser printada é filha de outra subárvore que também deva ser printada, as duas serão printadas.
+				Pois o arquivo apenas pedia que essa opção imprimisse todas as subárvores, e não pedia para tratar repetições como esta.
+
+		4 - A opção remove, caso encontre uma situação igual à que foi citada na terceira observação, irá remover a subárvore mais externa,
+				havia	duas possibilidades de remoção: caso 1 - excluindo da folha a raiz. caso 2 - excluindo da raiz até a folha(Este trabalho
+				realiza esta exlusão).
+				Exemplo de caso 1 e caso 2 para exclusão de uma raíz com valor "VP" e subárvore de valor "NNP" na situação citada acima.
+																		caso 1:
+              Ancestral                                Ancestral
+                /                                        /
+							 VP                                       VP
+             /   \                                        \
+            VP  don't care          ->                  don't care
+          /
+        NNP
+
+																		caso 2:
+              Ancestral                                Ancestral
+                /                                        
+							 VP                                      
+             /   \                                     
+            VP  don't care          ->
+          /
+        NNP
+
+

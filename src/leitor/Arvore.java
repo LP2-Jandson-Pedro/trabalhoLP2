@@ -1,7 +1,7 @@
 package leitor;
 
 import java.io.BufferedReader;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
 
 public class Arvore
@@ -17,11 +17,18 @@ public class Arvore
 		irmao_dir = null;
 	}
 
-	private void lerArvore(FileWriter escrita) {ler(0,escrita);}
-
-	private void ler(int Espacos,FileWriter escrita)
+	private void lerArvore(BufferedWriter escrita)
 	{
+		ler(0,escrita);
+		try {
+			escrita.write("\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
+	private void ler(int Espacos,BufferedWriter escrita)
+	{
 		try
 		{
 			if (this.filho != null) {escrita.write("(");}
@@ -33,6 +40,7 @@ public class Arvore
 				escrita.write(" ");
 				this.filho.ler(this.chave.length() + 2 + Espacos,escrita);
 				escrita.write(")");
+				escrita.flush();
 			}
 		
 			if (irmao_dir != null)
@@ -40,10 +48,10 @@ public class Arvore
 				escrita.write("\n");
 				for (int counter = 0; counter < Espacos; counter++) {escrita.write(" ");}
 				this.irmao_dir.ler(Espacos,escrita);
+				escrita.flush();
 			}
 		}
 		catch (IOException e) {
-				// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -57,89 +65,29 @@ public class Arvore
 		System.gc();
 	}
 
-	private boolean checkSons(String padrao)
+	private boolean search2(String padrao2, BufferedWriter escrita)
 	{
-		if(padrao.compareTo("-") == 0) {return true;}
-		if (this.chave.compareTo(padrao) == 0){return true;}
-		if(this.irmao_dir != null){return irmao_dir.checkSons(padrao);}
+		if (this.chave.compareTo(padrao2) == 0) {return true;}
+		if (this.filho != null) {if (this.filho.search2(padrao2, escrita) == true) {return true;}}
+		if (this.irmao_dir != null) {if (this.irmao_dir.search2(padrao2, escrita) == true) {return true;}}
 		return false;
 	}
 	
-	private void search2(String padrao2,int espaco, FileWriter escrita)
+	private void searchMain(String padrao1, String padrao2,BufferedWriter escrita)
 	{
-		try
-		{
-			if (this.chave.compareTo(padrao2) == 0 || padrao2.compareTo("-") == 0)
-			{
-				if (this.filho != null)
-				{
-					escrita.write("(" + this.chave + " ");
-					this.filho.ler(this.chave.length() + 2 + espaco, escrita);
-					escrita.write(")");
-				}
-				else {System.out.print(this.chave);}
-			}
-			if (irmao_dir != null)
-			{
-				if ((irmao_dir.checkSons(padrao2) && this.chave.compareTo(padrao2) == 0) || padrao2.compareTo("-") == 0)
-				{
-					escrita.write("\n");
-					for (int i = 0; i < espaco; i++){escrita.write(" ");}
-				}
-				irmao_dir.search2(padrao2,espaco, escrita);
-			}
-
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private void searchMain(String padrao1, String padrao2,FileWriter escrita)
-	{
-		try
+		if (this.chave.compareTo(padrao1) == 0)
 		{
 			if (this.filho != null)
 			{
-				if (this.chave.compareTo(padrao1) == 0 && this.filho.checkSons(padrao2))
-				{
-					escrita.write("("+this.chave+" ");
-					this.filho.search2(padrao2, this.chave.length() + 2, escrita);
-					escrita.write(")\n");
-				}
-				if (this.chave.compareTo(padrao1) != 0 || !this.filho.checkSons(padrao2)) {this.filho.searchMain(padrao1, padrao2, escrita);}
+				if (this.filho.search2(padrao2, escrita) == true) {this.lerArvore(escrita);}
 			}
-			if (this.irmao_dir != null) {this.irmao_dir.searchMain(padrao1, padrao2, escrita);}			
+			if (padrao2.compareTo("-") == 0) {this.lerArvore(escrita);}
 		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if (this.filho != null) {this.filho.searchMain(padrao1, padrao2, escrita);}
+		if (this.irmao_dir != null) {this.irmao_dir.searchMain(padrao1, padrao2, escrita);}
 	}
 	
-	private boolean remove2(String padrao1, String padrao2,FileWriter escrita)
-	{
-		if (this.irmao_dir != null)
-		{
-			if (this.irmao_dir.remove2(padrao1, padrao2, escrita) == true)
-			this.irmao_dir = null;
-		}
-		
-		if (this.chave.compareTo(padrao2) == 0 || padrao2.compareTo("-") == 0)
-		{
-			if (this.irmao_dir != null)
-			{
-				this.chave = this.irmao_dir.chave;
-				this.filho = this.irmao_dir.filho;
-				this.irmao_dir = this.irmao_dir.irmao_dir;
-			}
-			else {return true;}
-		}
-		return false;
-	}
-	
-	private boolean removeMain(String padrao1, String padrao2,FileWriter escrita)
+	private boolean removeMain(String padrao1, String padrao2,BufferedWriter escrita)
 	{
 		if (this.irmao_dir != null)
 		{
@@ -148,9 +96,23 @@ public class Arvore
 		}
 		if (this.filho != null)
 		{
-			if (this.chave.compareTo(padrao1) == 0 && this.filho.checkSons(padrao2))
+			if (this.chave.compareTo(padrao1) == 0 && (this.filho.search2(padrao2, escrita) || padrao2.compareTo("-") == 0))
 			{
-				if(this.filho.remove2(padrao1, padrao2, escrita) == true)
+				if (this.irmao_dir != null)
+				{
+					this.chave = this.irmao_dir.chave;
+					this.filho = this.irmao_dir.filho;
+					this.irmao_dir = this.irmao_dir.irmao_dir;
+				}
+				else
+				{
+					this.filho = null;
+					return true;
+				}
+			}
+			else
+			{
+				if (this.filho.removeMain(padrao1, padrao2, escrita) == true)
 				{
 					if (this.irmao_dir != null)
 					{
@@ -158,15 +120,18 @@ public class Arvore
 						this.filho = this.irmao_dir.filho;
 						this.irmao_dir = this.irmao_dir.irmao_dir;
 					}
-					else {return true;}
+					else
+					{
+						this.filho = null;
+						return true;
+					}
 				}
 			}
-			//if ()
 		}
 		return false;
 	}
 	
-	public void lerArquivo(BufferedReader is,FileWriter escrita, String opt, String padrao1, String padrao2) throws IOException
+	public void lerArquivo(BufferedReader is,BufferedWriter escrita, String opt, String padrao1, String padrao2) throws IOException
 	{		
 		int caracter = 0;
 		
@@ -180,13 +145,6 @@ public class Arvore
 				case ')':
 					return;
 				case '(':
-					if (this.chave.compareTo("TOP") == 0)
-					{
-						if (opt.compareTo("-p") == 0) {this.lerArvore(escrita);}
-						if (opt.compareTo("-s") == 0) {this.searchMain(padrao1, padrao2, escrita);}
-						this.limpaArvore();
-						this.chave = "";
-					}
 					if (this.filho == null) {this.filho = new Arvore();}
 					else
 					{
@@ -202,7 +160,24 @@ public class Arvore
 					this.chave = this.chave+(char)caracter;
 					break;
 			}
-			if (this.irmao_dir != null){return;}		
+			if (this.irmao_dir != null){return;}
+			if (this.chave.compareTo("TOP") == 0 && this.filho.chave != "")
+			{
+				if (opt.compareTo("-p") == 0) {this.lerArvore(escrita);}
+				if (opt.compareTo("-s") == 0) {this.searchMain(padrao1, padrao2, escrita);}
+				if (opt.compareTo("-r") == 0)
+				{
+					this.removeMain(padrao1, padrao2, escrita);
+					if (this.filho != null) {this.lerArvore(escrita);}
+					else
+					{
+						escrita.write("("+this.chave+")\n");
+						escrita.flush();
+					}
+				}
+				this.limpaArvore();
+				this.chave = "";
+			}
 		}
 	}
 }
