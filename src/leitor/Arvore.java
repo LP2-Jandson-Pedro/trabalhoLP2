@@ -16,7 +16,7 @@ public class Arvore
 		filho = null;
 		irmao_dir = null;
 	}
-
+/*
 	private void lerArvore(BufferedWriter escrita)
 	{
 		ler(0,escrita);
@@ -55,6 +55,7 @@ public class Arvore
 			e.printStackTrace();
 		}
 	}
+*/
 	
 	private void limpaArvore()
 	{
@@ -64,74 +65,8 @@ public class Arvore
 		filho = null;
 		System.gc();
 	}
-
-	private boolean search2(String padrao2, BufferedWriter escrita)
-	{
-		if (this.chave.compareTo(padrao2) == 0) {return true;}
-		if (this.filho != null) {if (this.filho.search2(padrao2, escrita) == true) {return true;}}
-		if (this.irmao_dir != null) {if (this.irmao_dir.search2(padrao2, escrita) == true) {return true;}}
-		return false;
-	}
 	
-	private void searchMain(String padrao1, String padrao2,BufferedWriter escrita)
-	{
-		if (this.chave.compareTo(padrao1) == 0)
-		{
-			if (this.filho != null)
-			{
-				if (this.filho.search2(padrao2, escrita) == true) {this.lerArvore(escrita);}
-			}
-			if (padrao2.compareTo("-") == 0) {this.lerArvore(escrita);}
-		}
-		if (this.filho != null) {this.filho.searchMain(padrao1, padrao2, escrita);}
-		if (this.irmao_dir != null) {this.irmao_dir.searchMain(padrao1, padrao2, escrita);}
-	}
-	
-	private boolean removeMain(String padrao1, String padrao2,BufferedWriter escrita)
-	{
-		if (this.irmao_dir != null)
-		{
-			if (this.irmao_dir.removeMain(padrao1, padrao2, escrita) == true)
-			this.irmao_dir = null;
-		}
-		if (this.filho != null)
-		{
-			if (this.chave.compareTo(padrao1) == 0 && (this.filho.search2(padrao2, escrita) || padrao2.compareTo("-") == 0))
-			{
-				if (this.irmao_dir != null)
-				{
-					this.chave = this.irmao_dir.chave;
-					this.filho = this.irmao_dir.filho;
-					this.irmao_dir = this.irmao_dir.irmao_dir;
-				}
-				else
-				{
-					this.filho = null;
-					return true;
-				}
-			}
-			else
-			{
-				if (this.filho.removeMain(padrao1, padrao2, escrita) == true)
-				{
-					if (this.irmao_dir != null)
-					{
-						this.chave = this.irmao_dir.chave;
-						this.filho = this.irmao_dir.filho;
-						this.irmao_dir = this.irmao_dir.irmao_dir;
-					}
-					else
-					{
-						this.filho = null;
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-	public void lerArquivo(BufferedReader is,BufferedWriter escrita, String opt, String padrao1, String padrao2) throws IOException
+	public boolean lerArquivo(BufferedReader is,BufferedWriter escrita) throws IOException
 	{		
 		int caracter = 0;
 		
@@ -143,42 +78,42 @@ public class Arvore
 				case '\r':
 					break;
 				case ')':
-					return;
+					if (this.filho == null) {return true;}
+					else {return false;}
 				case '(':
 					if (this.filho == null) {this.filho = new Arvore();}
 					else
 					{
 						this.irmao_dir = new Arvore();
 						this.irmao_dir.filho = new Arvore();
-						this.irmao_dir.lerArquivo(is, escrita, opt, padrao1, padrao2);
+						this.irmao_dir.lerArquivo(is, escrita);
 					}
 					break;
 				case ' ':
-					if (this.filho.chave == "") {this.filho.lerArquivo(is, escrita, opt, padrao1, padrao2);}
+					if (this.filho != null)
+					{
+						if (this.filho.chave == "")
+						{
+							if (this.filho.lerArquivo(is, escrita) == true)
+							{
+								escrita.write(this.chave+" "+this.filho.chave+"\n");
+								escrita.flush();
+							}
+						}
+					}
 					break;
 				default:
 					this.chave = this.chave+(char)caracter;
 					break;
 			}
-			if (this.irmao_dir != null){return;}
+			if (this.irmao_dir != null){return false;}
 			if (this.chave.compareTo("TOP") == 0 && this.filho.chave != "")
 			{
-				if (opt.compareTo("-p") == 0) {this.lerArvore(escrita);}
-				if (opt.compareTo("-s") == 0) {this.searchMain(padrao1, padrao2, escrita);}
-				if (opt.compareTo("-r") == 0)
-				{
-					this.removeMain(padrao1, padrao2, escrita);
-					if (this.filho != null) {this.lerArvore(escrita);}
-					else
-					{
-						escrita.write("("+this.chave+")\n");
-						escrita.flush();
-					}
-				}
 				this.limpaArvore();
 				this.chave = "";
 			}
 		}
+	return false;
 	}
 }
 
