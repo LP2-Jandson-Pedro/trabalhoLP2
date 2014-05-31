@@ -1,4 +1,4 @@
-package pedro.ufrn.buscaDigital;
+package leitor;
 
 public class Node{
 //	public char key;

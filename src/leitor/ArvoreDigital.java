@@ -1,4 +1,4 @@
-package pedro.ufrn.buscaDigital;
+package leitor;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
