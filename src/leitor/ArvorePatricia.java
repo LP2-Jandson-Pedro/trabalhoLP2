@@ -82,14 +82,14 @@ public class ArvorePatricia
 					ArvorePatricia auxiliar2 = new ArvorePatricia(tmp.substring(counter2));
 					filhos.get(counter).filhos.add(auxiliar);
 					filhos.get(counter).filhos.add(auxiliar2);
-					if (counter2 > aux.length()) {node = tmp.substring(aux.length(), (counter2) -1);}
-					else {node = "";}
+					if (counter2 > aux.length()) {filhos.get(counter).node = tmp.substring(aux.length(),counter2);}
+					else {filhos.get(counter).node = "";}
 					
 					return true;
 				}
 			}
 			for (int counter = 0; counter < this.filhos.size(); counter++)
-			{if(this.filhos.get(counter).inserefolhas(palavra,aux+this.node)) {return true;}}
+			{if(this.filhos.get(counter).inserefolhas(palavra,aux+this.node+this.filhos.get(counter).node)) {return true;}}
 		}
 		else
 		{
