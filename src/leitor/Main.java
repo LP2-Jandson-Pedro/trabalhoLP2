@@ -17,15 +17,15 @@ public class Main {
 		
 		teste.insere("abc");
 		teste.insere("abcd");
-		//teste.insere("rime");
-		//teste.insere("carro");
-		//teste.insere("carlos");
-		//teste.insere("blast");
-		//teste.insere("last");
-		//teste.insere("play");
-		//teste.insere("pray");
-		//teste.insere("pave");
-		//teste.insere("patie");
+		teste.insere("rime");
+		teste.insere("carro");
+		teste.insere("carlos");
+		teste.insere("blast");
+		teste.insere("last");
+		teste.insere("play");
+		teste.insere("pray");
+		teste.insere("pave");
+		teste.insere("patie");
 		teste.insere("abcde");
 		teste.insere("abcdef");
 		teste.insere("abca");
