@@ -13,6 +13,22 @@ public class Main {
 
 	public static void main(String[] args) {
 	
+		ArvorePatricia teste = new ArvorePatricia();
+		
+		teste.insere("abc");
+		teste.insere("abcd");
+		teste.insere("rime");
+		teste.insere("carro");
+		teste.insere("carlos");
+		teste.insere("last");
+		teste.insere("blast");
+		teste.insere("play");
+		teste.insere("pray");
+		teste.insere("pave");
+		teste.insere("patie");
+		teste.lerarvore("");
+		
+		/*
 		Arvore arvoreInterna = new Arvore();
 		BufferedWriter escrita = null;
 		try
@@ -28,5 +44,8 @@ public class Main {
 		}
 		catch (FileNotFoundException e) {e.printStackTrace();}
 		catch (IOException e) {e.printStackTrace();}
+		*/
+		
+		
 	}
 }

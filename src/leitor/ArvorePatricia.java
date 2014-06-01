@@ -47,15 +47,16 @@ public class ArvorePatricia
 			}
 			if((stringMaior.length() - stringMenor.length()) == 1)
 			{
-				if(stringMaior.contains((CharSequence)stringMenor)) {return true;}
+				if(stringMaior.contains(stringMenor)) {return true;}
 				else
 				{
-					for(int counter = 0; counter < stringMaior.length(); counter++)
+					//int counter = 0;
+					for(int counter = 0; counter < stringMenor.length(); counter++)
 					{
 						if(string1.charAt(counter) != string2.charAt(counter))
 						{
 							String sub =  stringMenor.substring(counter);
-							if(stringMaior.contains((CharSequence)sub)){return true;}
+							if(stringMaior.contains(sub)){return true;}
 						}						
 					}
 				}
@@ -130,5 +131,15 @@ public class ArvorePatricia
 				node = "";
 			}
 		}
+	}
+	
+	public void lerarvore(String palavra)
+	{
+		if (this.filhos.size() > 0)
+		{
+			for (int counter = 0; counter < this.filhos.size(); counter++)
+			{this.filhos.get(counter).lerarvore(palavra+this.node);}
+		}
+		else {System.out.println(palavra+node+'\n');}
 	}
 }
