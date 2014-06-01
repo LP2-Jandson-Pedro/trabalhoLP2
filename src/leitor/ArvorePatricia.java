@@ -27,7 +27,7 @@ public class ArvorePatricia
 			int chardif = 0;
 			for(int counter = 0; counter < string1.length(); counter++)
 			{if (string1.charAt(counter) != string2.charAt(counter)) {chardif++;}}
-			if (chardif <= 1) {return true;}
+			if (chardif == 1) {return true;}
 			else {return false;}
 		}
 		else
@@ -64,8 +64,48 @@ public class ArvorePatricia
 		return false;
 	}
 	
-	public void insere(String palavra)
+	public boolean inserefolhas(String palavra,String aux)
 	{
+		boolean inserido = false;
+		if (this.filhos.size() > 0)
+		{
+			for (int counter = 0; counter < this.filhos.size(); counter++)
+			{
+				if (palavra.compareTo(aux+this.node+this.filhos.get(counter).node) == 0) {return true;}
+				
+				String tmp = aux+this.node+this.filhos.get(counter).node;
+				if (comparaStrings(palavra, tmp))
+				{
+					int counter2 = 0;
+					while(counter2 < palavra.length() && counter2 < tmp.length() && palavra.charAt(counter2) == tmp.charAt(counter2))
+					{counter2++;}
+					ArvorePatricia auxiliar = new ArvorePatricia(palavra.substring(counter2));
+					filhos.add(auxiliar);
+					return true;
+				}
+			}
+			for (int counter = 0; counter < this.filhos.size(); counter++)
+			{if(this.filhos.get(counter).inserefolhas(palavra, aux+this.node)) {return true;}}
+		}
+		else
+		{
+			if (comparaStrings(palavra, aux+this.node))
+			{
+				int counter2 = 0;
+				while(counter2 < palavra.length() && counter2 < (this.node+this.filhos.get(counter).node).length() && palavra.charAt(counter2) == (this.node+this.filhos.get(counter).node).charAt(counter2))
+				{counter2++;}
+				ArvorePatricia auxiliar = new ArvorePatricia(palavra.substring(counter2));
+				filhos.add(auxiliar);
+				return true;
+			}
+		}
+		
+		
+		
+		
+		
+		
+		/*
 		if (this.node =="") {node = palavra;}
 		else
 		{
@@ -82,5 +122,9 @@ public class ArvorePatricia
 				}
 			}
 		}
+		
+		
+		*/
 	}
+	
 }
