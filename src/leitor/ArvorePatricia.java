@@ -64,9 +64,8 @@ public class ArvorePatricia
 		return false;
 	}
 	
-	public boolean inserefolhas(String palavra,String aux)
+	private boolean inserefolhas(String palavra,String aux)
 	{
-		boolean inserido = false;
 		if (this.filhos.size() > 0)
 		{
 			for (int counter = 0; counter < this.filhos.size(); counter++)
@@ -89,42 +88,47 @@ public class ArvorePatricia
 		}
 		else
 		{
-			if (comparaStrings(palavra, aux+this.node))
+			String tmp = aux+this.node;
+			if (comparaStrings(palavra, tmp))
 			{
 				int counter2 = 0;
-				while(counter2 < palavra.length() && counter2 < (this.node+this.filhos.get(counter).node).length() && palavra.charAt(counter2) == (this.node+this.filhos.get(counter).node).charAt(counter2))
+				while(counter2 < palavra.length() && counter2 < tmp.length() && palavra.charAt(counter2) == tmp.charAt(counter2))
 				{counter2++;}
 				ArvorePatricia auxiliar = new ArvorePatricia(palavra.substring(counter2));
 				filhos.add(auxiliar);
+				auxiliar.node = tmp.substring(counter2);
+				filhos.add(auxiliar);
+				node = node.substring(0, counter2);
 				return true;
 			}
 		}
-		
-		
-		
-		
-		
-		
-		/*
-		if (this.node =="") {node = palavra;}
-		else
-		{
-			if (comparaStrings(palavra,this.node) && palavra != node)
-			{
-				boolean insere = true;
-				for(int counter = 0; counter < this.filhos.size();counter++)
-				{if (this.filhos.get(counter).node == palavra){insere = false;}}
-				
-				if (insere == true)
-				{
-					ArvorePatricia aux = new ArvorePatricia(palavra);
-					filhos.add(aux);
-				}
-			}
-		}
-		
-		
-		*/
+		return false;
 	}
 	
+	public void insere(String palavra)
+	{
+		if (this.node == "")
+		{
+			if (this.filhos.size() > 0)
+			{
+				if (!this.inserefolhas(palavra, node))
+				{
+					ArvorePatricia auxiliar = new ArvorePatricia(palavra);
+					this.filhos.add(auxiliar);
+				}
+			}
+			else {this.node = palavra;}
+		}
+		else
+		{
+			if (!this.inserefolhas(palavra, node))
+			{
+				ArvorePatricia auxiliar = new ArvorePatricia(node);
+				this.filhos.add(auxiliar);
+				auxiliar.node = palavra;
+				this.filhos.add(auxiliar);
+				node = "";
+			}
+		}
+	}
 }
