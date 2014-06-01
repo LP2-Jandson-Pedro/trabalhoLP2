@@ -1,5 +1,7 @@
 package leitor;
 
+//import java.io.BufferedWriter;
+//import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +88,6 @@ public class ArvorePatricia
 				if (insert2){filhos.get(counter).filhos.add(auxiliar2);}
 				if (counter2 > aux.length()) {filhos.get(counter).node = tmp.substring(aux.length(),counter2);}
 				else {filhos.get(counter).node = "";}
-				//System.out.println(filhos.get(counter).node);
 				return true;
 			}
 		}
@@ -125,9 +126,9 @@ public class ArvorePatricia
 	public void leSemelhantes()
 	{
 		for (int counter = 0; counter < this.filhos.size(); counter++)
-		{
-			System.out.println("Semelhantes "+ (counter+1) +":");
-			this.filhos.get(counter).lerarvore("");
+		{ 
+				System.out.println("Semelhantes "+ (counter+1) +":");
+				this.filhos.get(counter).lerarvore("");
 		}
 	}
 }

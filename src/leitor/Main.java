@@ -11,44 +11,28 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-	public static void main(String[] args) {
+	private static Arvore arvoreInterna = new Arvore();
+	private static BufferedReader bf = null;
+	private static BufferedWriter escrita = null;
+	private static ArvorePatricia substantivos = new ArvorePatricia();
+	private static ArvorePatricia verbos = new ArvorePatricia();
+	private static ArvorePatricia adjetivos = new ArvorePatricia();
+	private static ArvorePatricia adverbios = new ArvorePatricia();
 	
-		ArvorePatricia teste = new ArvorePatricia();
+	public static void main(String[] args) {
 		
-		teste.insere("abc");
-		teste.insere("abcd");
-		teste.insere("rime");
-		teste.insere("carro");
-		teste.insere("carlos");
-		teste.insere("blast");
-		teste.insere("last");
-		teste.insere("play");
-		teste.insere("pray");
-		teste.insere("pave");
-		teste.insere("patie");
-		teste.insere("abcde");
-		teste.insere("abcdef");
-		teste.insere("abca");
-		teste.leSemelhantes();
 		
-		/*
-		Arvore arvoreInterna = new Arvore();
-		BufferedWriter escrita = null;
+		
 		try
-		{
-			escrita = new BufferedWriter(new FileWriter(new File("saida.txt")));
-			
-			BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(args[0])));
-
-			arvoreInterna.lerArquivo(bf, escrita);
+		{			
+			bf = new BufferedReader(new InputStreamReader(new FileInputStream(args[0]))); 
+			arvoreInterna.lerArquivo(bf, substantivos, verbos, adjetivos, adverbios);
 
 			escrita.flush();
 			escrita.close();
 		}
 		catch (FileNotFoundException e) {e.printStackTrace();}
-		catch (IOException e) {e.printStackTrace();}
-		*/
-		
+		catch (IOException e){e.printStackTrace();}
 		
 	}
 }

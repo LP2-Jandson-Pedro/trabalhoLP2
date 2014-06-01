@@ -1,61 +1,21 @@
 package leitor;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class Arvore
+public class Arvore extends ArvorePatricia
 {
 	private String chave;
 	private Arvore filho;
 	private Arvore irmao_dir;
-			
+
+	
 	public Arvore()
 	{
 		chave = "";
 		filho = null;
 		irmao_dir = null;
 	}
-/*
-	private void lerArvore(BufferedWriter escrita)
-	{
-		ler(0,escrita);
-		try {
-			escrita.write("\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void ler(int Espacos,BufferedWriter escrita)
-	{
-		try
-		{
-			if (this.filho != null) {escrita.write("(");}
-			
-			escrita.write(this.chave);
-			
-			if (this.filho != null)
-			{
-				escrita.write(" ");
-				this.filho.ler(this.chave.length() + 2 + Espacos,escrita);
-				escrita.write(")");
-				escrita.flush();
-			}
-		
-			if (irmao_dir != null)
-			{
-				escrita.write("\n");
-				for (int counter = 0; counter < Espacos; counter++) {escrita.write(" ");}
-				this.irmao_dir.ler(Espacos,escrita);
-				escrita.flush();
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-*/
 	
 	private void limpaArvore()
 	{
@@ -66,7 +26,7 @@ public class Arvore
 		System.gc();
 	}
 	
-	public boolean lerArquivo(BufferedReader is,BufferedWriter escrita) throws IOException
+	public boolean lerArquivo(BufferedReader is, ArvorePatricia substantivos, ArvorePatricia verbos, ArvorePatricia adjetivos, ArvorePatricia adverbios) throws IOException
 	{		
 		int caracter = 0;
 		
@@ -86,7 +46,7 @@ public class Arvore
 					{
 						this.irmao_dir = new Arvore();
 						this.irmao_dir.filho = new Arvore();
-						this.irmao_dir.lerArquivo(is, escrita);
+						this.irmao_dir.lerArquivo(is, substantivos, verbos, adjetivos, adverbios);
 					}
 					break;
 				case ' ':
@@ -94,10 +54,15 @@ public class Arvore
 					{
 						if (this.filho.chave == "")
 						{
-							if (this.filho.lerArquivo(is, escrita) == true)
+							if (this.filho.lerArquivo(is, substantivos, verbos, adjetivos, adverbios) == true)
 							{
-								escrita.write(this.chave+" "+this.filho.chave+"\n");
-								escrita.flush();
+								if (this.chave.compareTo("NNS") == 0 || this.chave.compareTo("NN") == 0)
+								{substantivos.insere(this.filho.chave);}								
+								else if (this.chave.charAt(0) == 'V') {verbos.insere(this.filho.chave);}
+								else if (this.chave.compareTo("JJ") == 0 || this.chave.compareTo("JJR") == 0 || this.chave.compareTo("JJS") == 0)
+								{adjetivos.insere(this.filho.chave);}
+								else if (this.chave.compareTo("RB") == 0 || this.chave.compareTo("RBR") == 0 || this.chave.compareTo("RBS") == 0)
+								{adverbios.insere(this.filho.chave);}
 							}
 						}
 					}
@@ -109,6 +74,14 @@ public class Arvore
 			if (this.irmao_dir != null){return false;}
 			if (this.chave.compareTo("TOP") == 0 && this.filho.chave != "")
 			{
+				System.out.println("Classe dos substantivos");//escrita.write();
+				substantivos.leSemelhantes();
+				System.out.println("Classe dos verbos");//escrita.write();
+				verbos.leSemelhantes();
+				System.out.println("Classe dos adjetivos");//escrita.write();
+				adjetivos.leSemelhantes();
+				System.out.println("Classe dos adverbios \n");//escrita.write();
+				adverbios.leSemelhantes();
 				this.limpaArvore();
 				this.chave = "";
 			}
