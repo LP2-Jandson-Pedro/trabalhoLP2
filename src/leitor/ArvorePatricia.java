@@ -56,6 +56,7 @@ public class ArvorePatricia
 						{
 							String sub =  stringMenor.substring(counter);
 							if(stringMaior.contains(sub)){return true;}
+							else {return false;}
 						}						
 					}
 				}
@@ -65,29 +66,32 @@ public class ArvorePatricia
 	}
 	
 	private boolean inserefolhas(String palavra,String aux)
-	{
+	{	
 		for (int counter = 0; counter < this.filhos.size(); counter++)
 		{
-			if (palavra.compareTo(aux+this.node+this.filhos.get(counter).node) == 0) {return true;}
+			if (palavra.compareTo(aux+this.filhos.get(counter).node) == 0) {return true;}
 
-			String tmp = aux+this.node+this.filhos.get(counter).node;
+			String tmp = aux+this.filhos.get(counter).node;
 			if (comparaStrings(palavra, tmp))
 			{
 				int counter2 = 0;
+				boolean insert2 = true;
 				while(counter2 < palavra.length() && counter2 < tmp.length() && palavra.charAt(counter2) == tmp.charAt(counter2))
 				{counter2++;}
 				ArvorePatricia auxiliar = new ArvorePatricia(palavra.substring(counter2));
 				ArvorePatricia auxiliar2 = new ArvorePatricia(tmp.substring(counter2));
 				filhos.get(counter).filhos.add(auxiliar);
-				filhos.get(counter).filhos.add(auxiliar2);
+				for (int counter3 = 0; counter3 < this.filhos.get(counter).filhos.size(); counter3++)
+				{if (filhos.get(counter).filhos.get(counter3).node.compareTo(auxiliar2.node) == 0){insert2 = false;}}
+				if (insert2){filhos.get(counter).filhos.add(auxiliar2);}
 				if (counter2 > aux.length()) {filhos.get(counter).node = tmp.substring(aux.length(),counter2);}
 				else {filhos.get(counter).node = "";}
-				
+				//System.out.println(filhos.get(counter).node);
 				return true;
 			}
 		}
 		for (int counter = 0; counter < this.filhos.size(); counter++)
-		{if(this.filhos.get(counter).inserefolhas(palavra,aux+this.node+this.filhos.get(counter).node)) {return true;}}
+		{if(this.filhos.get(counter).inserefolhas(palavra,aux+this.filhos.get(counter).node)) {return true;}}
 		return false;
 	}
 	
@@ -116,5 +120,14 @@ public class ArvorePatricia
 			{this.filhos.get(counter).lerarvore(palavra+this.node);}
 		}
 		else {System.out.println(palavra+node);}
+	}
+
+	public void leSemelhantes()
+	{
+		for (int counter = 0; counter < this.filhos.size(); counter++)
+		{
+			System.out.println("Semelhantes "+ (counter+1) +":");
+			this.filhos.get(counter).lerarvore("");
+		}
 	}
 }

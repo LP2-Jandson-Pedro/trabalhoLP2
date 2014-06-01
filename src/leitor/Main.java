@@ -29,7 +29,7 @@ public class Main {
 		teste.insere("abcde");
 		teste.insere("abcdef");
 		teste.insere("abca");
-		teste.lerarvore("");
+		teste.leSemelhantes();
 		
 		/*
 		Arvore arvoreInterna = new Arvore();
