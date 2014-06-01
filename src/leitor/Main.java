@@ -20,8 +20,8 @@ public class Main {
 		teste.insere("rime");
 		teste.insere("carro");
 		teste.insere("carlos");
-		teste.insere("last");
 		teste.insere("blast");
+		teste.insere("last");
 		teste.insere("play");
 		teste.insere("pray");
 		teste.insere("pave");

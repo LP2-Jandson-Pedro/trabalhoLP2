@@ -32,8 +32,8 @@ public class ArvorePatricia
 		}
 		else
 		{
-			String stringMaior;
-			String stringMenor;
+			String stringMaior="";
+			String stringMenor="";
 			
 			if(string1.length() > string2.length())
 			{
@@ -50,7 +50,6 @@ public class ArvorePatricia
 				if(stringMaior.contains(stringMenor)) {return true;}
 				else
 				{
-					//int counter = 0;
 					for(int counter = 0; counter < stringMenor.length(); counter++)
 					{
 						if(string1.charAt(counter) != string2.charAt(counter))
@@ -80,12 +79,17 @@ public class ArvorePatricia
 					while(counter2 < palavra.length() && counter2 < tmp.length() && palavra.charAt(counter2) == tmp.charAt(counter2))
 					{counter2++;}
 					ArvorePatricia auxiliar = new ArvorePatricia(palavra.substring(counter2));
-					filhos.add(auxiliar);
+					ArvorePatricia auxiliar2 = new ArvorePatricia(tmp.substring(counter2));
+					filhos.get(counter).filhos.add(auxiliar);
+					filhos.get(counter).filhos.add(auxiliar2);
+					if (counter2 > aux.length()) {node = tmp.substring(aux.length(), (counter2) -1);}
+					else {node = "";}
+					
 					return true;
 				}
 			}
 			for (int counter = 0; counter < this.filhos.size(); counter++)
-			{if(this.filhos.get(counter).inserefolhas(palavra, aux+this.node)) {return true;}}
+			{if(this.filhos.get(counter).inserefolhas(palavra,aux+this.node)) {return true;}}
 		}
 		else
 		{
@@ -108,28 +112,18 @@ public class ArvorePatricia
 	
 	public void insere(String palavra)
 	{
-		if (this.node == "")
+		if (this.filhos.size() > 0)
 		{
-			if (this.filhos.size() > 0)
+			if (!this.inserefolhas(palavra,""))
 			{
-				if (!this.inserefolhas(palavra, node))
-				{
-					ArvorePatricia auxiliar = new ArvorePatricia(palavra);
-					this.filhos.add(auxiliar);
-				}
+				ArvorePatricia auxiliar = new ArvorePatricia(palavra);
+				this.filhos.add(auxiliar);
 			}
-			else {this.node = palavra;}
 		}
 		else
 		{
-			if (!this.inserefolhas(palavra, node))
-			{
-				ArvorePatricia auxiliar = new ArvorePatricia(node);
-				this.filhos.add(auxiliar);
-				auxiliar.node = palavra;
-				this.filhos.add(auxiliar);
-				node = "";
-			}
+			ArvorePatricia auxiliar = new ArvorePatricia(palavra);
+			this.filhos.add(auxiliar);
 		}
 	}
 	
@@ -140,6 +134,6 @@ public class ArvorePatricia
 			for (int counter = 0; counter < this.filhos.size(); counter++)
 			{this.filhos.get(counter).lerarvore(palavra+this.node);}
 		}
-		else {System.out.println(palavra+node+'\n');}
+		else {System.out.println(palavra+node);}
 	}
 }
